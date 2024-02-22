@@ -166,6 +166,7 @@
 
       uint16_t length() { return E2END + 1; }
       
+      void begin (int size) {}
 
     private:
     
