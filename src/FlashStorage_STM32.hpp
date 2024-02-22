@@ -50,7 +50,7 @@
   {
     public:
     
-      EEPROMClass() : _initialized(false), _dirtyBuffer(false), _commitASAP(true) , _validEEPROM(true) {}
+      EEPROMClass() : _initialized(false), _dirtyBuffer(false), _validEEPROM(true) {}
 
       /**
        * Read an eeprom cell
@@ -129,20 +129,9 @@
         {              
           eeprom_buffered_write_byte(offset, *_pointer++);
         }
-
-        if (_commitASAP)
-        {
-          // Save the data from the buffer to the flash right away
-          eeprom_buffer_flush();
-          
-          _dirtyBuffer = false;
-          _validEEPROM = true;
-        }
-        else  
-        {
-          // Delay saving the data from the buffer to the flash. Just flag and wait for commit() later
+        
+        // Delay saving the data from the buffer to the flash. Just flag and wait for commit() later
           _dirtyBuffer = true;    
-        }
              
         return t;
       }
@@ -177,8 +166,6 @@
 
       uint16_t length() { return E2END + 1; }
       
-      void setCommitASAP(bool value = true) { _commitASAP = value; }
-      bool getCommitASAP() { return _commitASAP; }
 
     private:
     
@@ -191,7 +178,6 @@
 
       bool _initialized;     
       bool _dirtyBuffer;
-      bool _commitASAP;
       bool _validEEPROM;
   };
   
